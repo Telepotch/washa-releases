@@ -1,0 +1,78 @@
+Washa — AI models and components used (notice)
+==============================================
+
+Washa uses machine-learning models and libraries made by others. Each keeps its own license.
+The license texts are in this same folder (shown in the app under Settings > "使っているモデルとライセンス").
+Which items a build contains depends on the platform: the Windows zip carries items 1-5 in its models folder or its libraries,
+the Android app uses items 1-5 (the models are fetched at first use or placed by hand), and the iPhone / Mac apps use items 5 and 6.
+Retrieved 2026-10-01 (item 6: 2026-10-04).
+
+1. SenseVoice Small — speech recognition  (sense-voice-2024-07-17.int8.onnx / sense-voice-2024-07-17.tokens.txt)
+   Model:   SenseVoiceSmall by FunAudioLLM / Alibaba Group (Tongyi SpeechTeam)
+            https://github.com/FunAudioLLM/SenseVoice
+   Format:  int8 ONNX export by the sherpa-onnx project (k2-fsa), 2024-07-17 release
+            https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17
+   License: FunASR Model Open Source License Agreement v1.1
+            (model-sensevoice-FunASR-MODEL_LICENSE.txt)
+   Credit:  "SenseVoiceSmall" — Copyright (C) 2023-2028 Alibaba Group. Model name retained as required by §2.2.
+
+2. Silero VAD — speech activity detection  (silero_vad.onnx)
+   Model:   Silero VAD by Silero Team — https://github.com/snakers4/silero-vad
+   Format:  ONNX as distributed by sherpa-onnx (asr-models release)
+   License: MIT (model-silero-vad-LICENSE.txt)
+
+3. Streaming Sortformer v2.1 — speaker segmentation  (sortformer-dynq8.onnx)
+   Model:   NVIDIA Streaming Sortformer v2.1, 4 speakers (diar_streaming_sortformer_4spk-v2.1)
+            https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2.1
+   Changes: exported to ONNX and dynamically quantized to 8 bit for Washa (a Derivative Model).
+   License: NVIDIA Open Model License Agreement (model-sortformer-NVIDIA-Open-Model-License.txt), which requires use consistent
+            with NVIDIA's Trustworthy AI terms (model-sortformer-NVIDIA-Trustworthy-AI-terms.txt)
+   Notice:  Licensed by NVIDIA Corporation under the NVIDIA Open Model License
+
+4. WeSpeaker ResNet34-LM (VoxCeleb) — speaker embedding  (wespeaker_trunk343.onnx / wespeaker_trunk343.q8.onnx / wespeaker_pool.bin)
+   Model:   WeSpeaker ResNet34-LM trained on VoxCeleb (wespeaker_en_voxceleb_resnet34_LM.onnx, as distributed by sherpa-onnx)
+            https://github.com/wenet-e2e/wespeaker  /  https://huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM
+   Changes: the network was cut before the pooling layer (node 343); the pooling constants were saved separately
+            (wespeaker_pool.bin); the .q8 file is the same trunk quantized to 8 bit.
+   License: Creative Commons Attribution 4.0 International (model-wespeaker-CC-BY-4.0.txt) —
+            the pretrained VoxCeleb models follow the license of the VoxCeleb dataset.
+   Credit:  "WeSpeaker ResNet34-LM (VoxCeleb)" by the WeSpeaker team (wenet-e2e: Hongji Wang, Chengdong Liang, Shuai Wang,
+            Zhengyang Chen, Binbin Zhang, Xu Xiang, Yanlei Deng, Yanmin Qian — "Wespeaker: A research and production oriented
+            speaker embedding learning toolkit", ICASSP 2023), licensed under CC BY 4.0
+            (https://creativecommons.org/licenses/by/4.0/). Modified for Washa as described under "Changes".
+            Copyright notice: the licensor publishes no separate copyright line (checked 2026-10-01); the credit above stands for it.
+            VoxCeleb dataset: Nagrani, Chung, Zisserman et al., University of Oxford.
+            No warranties are given (CC BY 4.0, Section 5).
+
+5. pyannote segmentation 3.0 — speech and speaker-change detection, optional fast path  (pyannote-seg3.onnx)
+   Model:   pyannote/segmentation-3.0 by Hervé Bredin and the pyannote team (CNRS) — https://huggingface.co/pyannote/segmentation-3.0
+            ONNX export as distributed by the sherpa-onnx project (k2-fsa).
+   License: MIT (model-pyannote-segmentation-MIT.txt). Copyright (c) 2020 CNRS.
+
+6. MeCab and the IPA dictionary — Japanese morphological analysis  (compiled into the app; dictionary shipped with the app)
+   Library: MeCab (BSD license option) by Taku Kudo and Nippon Telegraph and Telephone Corporation — https://taku910.github.io/mecab/
+            Packaged as libmecab by trickart (https://github.com/trickart/libmecab).
+   License: BSD 3-clause (mecab-BSD-LICENSE.txt). The names of the copyright holders are not used to endorse Washa.
+   Data:    IPA dictionary mecab-ipadic 2.7.0 — Copyright 2000-2003 Nara Institute of Science and Technology (NAIST) and ICOT.
+            Packaged by trickart (https://github.com/trickart/MeCabIPAdic).
+   License: the ipadic license, kept in its original form (ipadic-LICENSE.txt): use, reproduction and distribution are permitted
+            provided the copyright notice and the paragraphs of that license accompany every copy.
+
+7. FluidAudio — speaker separation and speaker embedding on iPhone / Mac  (code: linked into the app; models: fetched by FluidAudio at first use)
+   Code:    FluidAudio by Fluid Inference — https://github.com/FluidInference/FluidAudio
+   License: Apache License 2.0 (fluidaudio-LICENSE.txt). FluidAudio includes third-party code under its own licenses:
+            fastcluster, BSD 2-clause (fluidaudio-fastcluster-LICENSE.md) and VBx, Apache-2.0 (fluidaudio-vbx-LICENSE.md).
+   Models:  downloaded on the device by FluidAudio from Hugging Face (FluidInference/speaker-diarization-coreml);
+            Washa does not redistribute them. The models are Core ML conversions of pyannote speaker-diarization community-1
+            (which uses WeSpeaker and BUT Speech@FIT PLDA).
+   Changes: converted to Core ML by Fluid Inference (modified from the originals).
+   License: Creative Commons Attribution 4.0 International, https://creativecommons.org/licenses/by/4.0/
+            (the same CC BY 4.0 text as item 4: model-wespeaker-CC-BY-4.0.txt)
+   Credit:  pyannote (pyannote.audio, community-1), WeSpeaker (wenet-e2e), BUT Speech@FIT (Brno University of Technology),
+            and Fluid Inference (Core ML conversion). No warranties are given (CC BY 4.0, Section 5).
+
+No warranty is given for any model or library (see each license).
+
+Washa is not affiliated with, and is not endorsed or approved by, Alibaba Group, FunAudioLLM, the sherpa-onnx project, Silero,
+NVIDIA Corporation, the WeSpeaker team, pyannote, BUT Speech@FIT, Fluid Inference, or the MeCab project.
+Their names are used only to say where each model or library comes from.
